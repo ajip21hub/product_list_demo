@@ -1,15 +1,36 @@
-# Product List Demo
+# Product List Demo - Flutter dengan State Management
 
-Aplikasi Flutter sederhana untuk menampilkan daftar produk dari Fake Store API dengan tampilan yang modern dan responsif.
+Aplikasi Flutter yang menampilkan daftar produk dari Fake Store API dengan implementasi state management menggunakan Provider pattern.
 
-## 📱 Screenshots
+## 📱 Fitur Utama
 
-Aplikasi ini menampilkan:
+### 🛍️ Product List Screen
 - Grid layout produk dengan gambar
 - Filter berdasarkan kategori
 - Rating dan harga produk
 - Loading state dan error handling
 - Pull-to-refresh functionality
+- Badge counter untuk cart dan wishlist
+- Hero animation saat navigasi
+
+### 📱 Product Detail Screen
+- UI detail produk dengan SliverAppBar
+- Hero animation dari product list
+- Tombol add to cart dan add to wishlist
+- Visual feedback untuk item yang sudah ada di cart/wishlist
+- Snackbar dengan undo functionality
+
+### 🏪 State Management dengan Provider
+- **CartProvider**: Mengelola shopping cart state
+  - Add/remove items dari cart
+  - Update quantity produk
+  - Calculate total amount
+  - Persistent state across screens
+  
+- **WishlistProvider**: Mengelola wishlist/favorites state
+  - Toggle favorite products
+  - Track favorite count
+  - Persistent state across screens
 
 ## 🚀 Cara Menjalankan
 
@@ -45,18 +66,25 @@ Aplikasi ini menampilkan:
 
 ```
 lib/
-├── main.dart                    # Entry point aplikasi
+├── main.dart                       # Entry point dengan MultiProvider setup
 ├── models/
-│   └── product.dart            # Model data produk
+│   ├── product.dart                # Model data produk dan rating
+│   └── cart_item.dart              # Model item dalam cart
+├── providers/
+│   ├── cart_provider.dart          # Cart state management
+│   └── wishlist_provider.dart      # Wishlist state management
 ├── services/
-│   └── api_service.dart        # API service untuk fetch data
+│   └── api_service.dart            # API service untuk fetch data
 └── screens/
-    └── product_list_screen.dart # UI tampilan daftar produk
+    ├── product_list_screen.dart   # UI tampilan daftar produk
+    └── product_detail_screen.dart # UI detail produk
 ```
 
 ## 🔧 Dependencies
 
+- **provider**: State management solution untuk Flutter
 - **http**: Package untuk HTTP requests ke API
+- **cupertino_icons**: iOS style icons
 - **flutter**: Core framework Flutter
 
 ## 📡 API yang Digunakan

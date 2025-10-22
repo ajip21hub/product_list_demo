@@ -5,6 +5,7 @@ import '../services/api_service.dart';
 import '../providers/cart_provider.dart';
 import '../providers/wishlist_provider.dart';
 import 'product_detail_screen.dart';
+import 'wishlist_screen.dart';
 
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({super.key});
@@ -93,12 +94,18 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 children: [
                   IconButton(
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Wishlist: $wishlistCount items'),
-                          duration: const Duration(seconds: 1),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const WishlistScreen(),
                         ),
                       );
+                      // ScaffoldMessenger.of(context).showSnackBar(
+                      //   SnackBar(
+                      //     content: Text('Wishlist: $wishlistCount items'),
+                      //     duration: const Duration(seconds: 1),
+                      //   ),
+                      // );
                     },
                     icon: const Icon(Icons.favorite),
                   ),
@@ -175,6 +182,16 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 ],
               );
             },
+          ),
+          IconButton(
+            onPressed: () {
+              SnackBar snackBar = const SnackBar(
+                content: Text('Profile feature coming soon!'),
+                duration: Duration(seconds: 2),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            },
+            icon: const Icon(Icons.person),
           ),
         ],
       ),
@@ -405,7 +422,9 @@ class ProductCard extends StatelessWidget {
                               );
                             },
                             icon: Icon(
-                              isFavorite ? Icons.favorite : Icons.favorite_border,
+                              isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
                               color: isFavorite ? Colors.red : Colors.grey[600],
                               size: 20,
                             ),
@@ -459,7 +478,11 @@ class ProductCard extends StatelessWidget {
                               const SizedBox(height: 2),
                               Row(
                                 children: [
-                                  Icon(Icons.star, size: 14, color: Colors.amber[600]),
+                                  Icon(
+                                    Icons.star,
+                                    size: 14,
+                                    color: Colors.amber[600],
+                                  ),
                                   const SizedBox(width: 2),
                                   Text(
                                     product.rating.rate.toStringAsFixed(1),
@@ -478,7 +501,9 @@ class ProductCard extends StatelessWidget {
                             final isInCart = cartProvider.isInCart(product);
                             return Container(
                               decoration: BoxDecoration(
-                                color: isInCart ? Colors.green[50] : Colors.blue[50],
+                                color: isInCart
+                                    ? Colors.green[50]
+                                    : Colors.blue[50],
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(
                                   color: isInCart ? Colors.green : Colors.blue,
@@ -515,7 +540,9 @@ class ProductCard extends StatelessWidget {
                                   }
                                 },
                                 icon: Icon(
-                                  isInCart ? Icons.shopping_cart : Icons.add_shopping_cart,
+                                  isInCart
+                                      ? Icons.shopping_cart
+                                      : Icons.add_shopping_cart,
                                   color: isInCart ? Colors.green : Colors.blue,
                                   size: 18,
                                 ),

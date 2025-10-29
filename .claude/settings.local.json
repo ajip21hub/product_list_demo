@@ -3,7 +3,13 @@
     "allow": [
       "Bash(flutter pub get:*)",
       "WebFetch(domain:materis.vercel.app)",
-      "Bash(flutter analyze:*)"
+      "Bash(flutter analyze:*)",
+      "Bash(flutter run:*)",
+      "Bash(flutter build:*)",
+      "Bash(flutter test:*)",
+      "Bash(flutter clean:*)",
+      "WebFetch(domain:dummyjson.com)",
+      "Bash(tree:*)"
     ],
     "deny": [],
     "ask": []

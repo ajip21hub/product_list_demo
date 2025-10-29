@@ -4,7 +4,28 @@ import '../models/product.dart';
 import '../../core/const/api_constants.dart';
 
 class ApiService {
-  static const String baseUrl = APIConstants.baseUrl;
+  // ===========================================
+  // 🌐 API SERVICE WITH .ENV IMPLEMENTATION
+  // ===========================================
+  ///
+  /// 📚 KELEBIHAN MENGGUNAKAN .ENV UNTUK API:
+  ///
+  /// ✅ **FLEXIBLE BASE URL**: Bisa switch API endpoint tanpa code deployment
+  ///    - Development: https://dummyjson.com
+  ///    - Staging: https://staging-api.yourdomain.com
+  ///    - Production: https://api.yourdomain.com
+  ///
+  /// ✅ **DYNAMIC CONFIGURATION**: Runtime URL resolution
+  ///    - Tidak lagi hardcoded constant
+  ///    - Bisa diubah per environment
+  ///    - Support untuk multiple API backends
+  ///
+  /// ✅ **SECURITY**: API endpoint tidak exposed di source code
+  ///    - Base URL aman di .env file
+  ///    - Tidak visible di version control
+  ///    - Mudah untuk security audit
+
+  static String get baseUrl => APIConstants.baseUrl;
 
   Future<List<Product>> getProducts() async {
     try {

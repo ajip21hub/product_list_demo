@@ -43,3 +43,28 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# ===========================================
+# ENVIRONMENT FILES - SECURITY PROTECTION
+# ===========================================
+#
+# 🚨 KEAMAMANAN KRITIS: Environment files mengandung sensitive data
+# - .env files berisi credentials, API keys, dan konfigurasi rahasia
+# - JANGAN PERNAH commit ke version control!
+# - Files ini di-exclude untuk melindungi credentials dari exposure
+#
+# 📝 KELEBIHAN PENGGUNAAN .env:
+# ✅ Credentials aman dari version control
+# ✅ Environment-specific configuration
+# ✅ Mudah management tanpa code changes
+# ✅ Follow security best practices
+#
+# Environment files yang di-ignore:
+.env
+.env.*
+!.env.example
+
+# Additional sensitive files
+secrets.yaml
+config.json
+private_keys.*

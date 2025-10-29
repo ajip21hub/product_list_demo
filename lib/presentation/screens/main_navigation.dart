@@ -9,11 +9,15 @@ import 'profile_screen.dart';
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
 
+  static MainNavigationState? of(BuildContext context) {
+    return context.findAncestorStateOfType<MainNavigationState>();
+  }
+
   @override
-  State<MainNavigation> createState() => _MainNavigationState();
+  State<MainNavigation> createState() => MainNavigationState();
 }
 
-class _MainNavigationState extends State<MainNavigation> {
+class MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
   late PageController _pageController;
 
@@ -27,6 +31,28 @@ class _MainNavigationState extends State<MainNavigation> {
   void dispose() {
     _pageController.dispose();
     super.dispose();
+  }
+
+  void navigateToWishlistTab() {
+    setState(() {
+      _currentIndex = 2; // Wishlist is at index 2
+    });
+    _pageController.animateToPage(
+      2,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void navigateToAddToCartTab() {
+    setState(() {
+      _currentIndex = 1; // Cart is at index 1
+    });
+    _pageController.animateToPage(
+      1,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
   }
 
   @override

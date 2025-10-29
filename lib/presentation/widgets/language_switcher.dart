@@ -43,10 +43,10 @@ import '../../core/localization/localization_provider.dart';
 /// - Displays loading indicator during switch
 
 enum LanguageSwitcherType {
-  dropdown,     // Standard dropdown menu
-  menuButton,   // Button with dropdown menu
-  segmented,    // Segmented control style
-  toggle,       // Simple toggle button
+  dropdown, // Standard dropdown menu
+  menuButton, // Button with dropdown menu
+  segmented, // Segmented control style
+  toggle, // Simple toggle button
 }
 
 class LanguageSwitcher extends ConsumerWidget {
@@ -81,13 +81,37 @@ class LanguageSwitcher extends ConsumerWidget {
 
     switch (type) {
       case LanguageSwitcherType.dropdown:
-        return _buildDropdown(context, ref, currentLanguageCode, languageNotifier, localizations);
+        return _buildDropdown(
+          context,
+          ref,
+          currentLanguageCode,
+          languageNotifier,
+          localizations,
+        );
       case LanguageSwitcherType.menuButton:
-        return _buildMenuButton(context, ref, currentLanguageCode, languageNotifier, localizations);
+        return _buildMenuButton(
+          context,
+          ref,
+          currentLanguageCode,
+          languageNotifier,
+          localizations,
+        );
       case LanguageSwitcherType.segmented:
-        return _buildSegmented(context, ref, currentLanguageCode, languageNotifier, localizations);
+        return _buildSegmented(
+          context,
+          ref,
+          currentLanguageCode,
+          languageNotifier,
+          localizations,
+        );
       case LanguageSwitcherType.toggle:
-        return _buildToggle(context, ref, currentLanguageCode, languageNotifier, localizations);
+        return _buildToggle(
+          context,
+          ref,
+          currentLanguageCode,
+          languageNotifier,
+          localizations,
+        );
     }
   }
 
@@ -132,16 +156,19 @@ class LanguageSwitcher extends ConsumerWidget {
           ),
         );
       }).toList(),
-      onChanged: languageState.isLoading ? null : (String? newLanguageCode) async {
-        if (newLanguageCode != null && newLanguageCode != currentLanguageCode) {
-          await _handleLanguageChange(
-            context,
-            languageNotifier,
-            newLanguageCode,
-            localizations,
-          );
-        }
-      },
+      onChanged: languageState.isLoading
+          ? null
+          : (String? newLanguageCode) async {
+              if (newLanguageCode != null &&
+                  newLanguageCode != currentLanguageCode) {
+                await _handleLanguageChange(
+                  context,
+                  languageNotifier,
+                  newLanguageCode,
+                  localizations,
+                );
+              }
+            },
     );
   }
 
@@ -159,34 +186,36 @@ class LanguageSwitcher extends ConsumerWidget {
       icon: icon ?? const Icon(Icons.language),
       tooltip: localizations.translate('language.changeLanguage'),
       position: PopupMenuPosition.under,
-      itemBuilder: (context) => LocaleConstants.getLanguageOptions().entries.map((entry) {
-        final languageCode = entry.key;
-        final languageName = entry.value;
-        final isSelected = languageCode == currentLanguageCode;
+      itemBuilder: (context) =>
+          LocaleConstants.getLanguageOptions().entries.map((entry) {
+            final languageCode = entry.key;
+            final languageName = entry.value;
+            final isSelected = languageCode == currentLanguageCode;
 
-        return PopupMenuItem<String>(
-          value: languageCode,
-          enabled: !languageState.isLoading,
-          child: Row(
-            children: [
-              if (showFlag) ...[
-                _buildFlag(languageCode),
-                const SizedBox(width: 8),
-              ],
-              Expanded(
-                child: Text(
-                  languageName,
-                  style: TextStyle(
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            return PopupMenuItem<String>(
+              value: languageCode,
+              enabled: !languageState.isLoading,
+              child: Row(
+                children: [
+                  if (showFlag) ...[
+                    _buildFlag(languageCode),
+                    const SizedBox(width: 8),
+                  ],
+                  Expanded(
+                    child: Text(
+                      languageName,
+                      style: TextStyle(
+                        fontWeight: isSelected
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                      ),
+                    ),
                   ),
-                ),
+                  if (isSelected) const Icon(Icons.check, color: Colors.blue),
+                ],
               ),
-              if (isSelected)
-                const Icon(Icons.check, color: Colors.blue),
-            ],
-          ),
-        );
-      }).toList(),
+            );
+          }).toList(),
       onSelected: (String? newLanguageCode) async {
         if (newLanguageCode != null && newLanguageCode != currentLanguageCode) {
           await _handleLanguageChange(
@@ -258,15 +287,17 @@ class LanguageSwitcher extends ConsumerWidget {
     final isEnglish = currentLanguageCode == 'en';
 
     return IconButton.filled(
-      onPressed: languageState.isLoading ? null : () async {
-        final newLanguageCode = isEnglish ? 'id' : 'en';
-        await _handleLanguageChange(
-          context,
-          languageNotifier,
-          newLanguageCode,
-          localizations,
-        );
-      },
+      onPressed: languageState.isLoading
+          ? null
+          : () async {
+              final newLanguageCode = isEnglish ? 'id' : 'en';
+              await _handleLanguageChange(
+                context,
+                languageNotifier,
+                newLanguageCode,
+                localizations,
+              );
+            },
       icon: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -299,10 +330,7 @@ class LanguageSwitcher extends ConsumerWidget {
         flagEmoji = '🌐'; // Globe emoji for unknown languages
     }
 
-    return Text(
-      flagEmoji,
-      style: TextStyle(fontSize: size),
-    );
+    return Text(flagEmoji, style: TextStyle(fontSize: size));
   }
 
   /// Handles language change with proper error handling and user feedback
@@ -320,13 +348,16 @@ class LanguageSwitcher extends ConsumerWidget {
 
     if (success) {
       // Show success message
-      final languageName = LocaleConstants.getNativeLanguageName(newLanguageCode);
+      final languageName = LocaleConstants.getNativeLanguageName(
+        newLanguageCode,
+      );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            localizations.translate('language.languageChanged', args: {
-              'language': languageName,
-            }),
+            localizations.translate(
+              'language.languageChanged',
+              args: {'language': languageName},
+            ),
           ),
           duration: const Duration(seconds: 2),
           behavior: SnackBarBehavior.floating,
@@ -382,26 +413,33 @@ class LanguageToggle extends ConsumerWidget {
     final displayText = isEnglish ? 'EN' : 'ID';
 
     return IconButton(
-      onPressed: languageState.isLoading ? null : () async {
-        final newLanguageCode = isEnglish ? 'id' : 'en';
-        await languageNotifier.changeLanguage(newLanguageCode);
+      onPressed: languageState.isLoading
+          ? null
+          : () async {
+              final newLanguageCode = isEnglish ? 'id' : 'en';
+              await languageNotifier.changeLanguage(newLanguageCode);
 
-        // Show brief feedback
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                localizations.translate('language.languageChanged', args: {
-                  'language': LocaleConstants.getNativeLanguageName(newLanguageCode),
-                }),
-              ),
-              duration: const Duration(seconds: 1),
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
-        }
-      },
+              // Show brief feedback
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      localizations.translate(
+                        'language.languageChanged',
+                        args: {
+                          'language': LocaleConstants.getNativeLanguageName(
+                            newLanguageCode,
+                          ),
+                        },
+                      ),
+                    ),
+                    duration: const Duration(seconds: 1),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              }
+            },
       icon: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -416,11 +454,7 @@ class LanguageToggle extends ConsumerWidget {
             ),
             const SizedBox(width: 4),
           ],
-          Icon(
-            Icons.swap_horiz,
-            color: color,
-            size: size,
-          ),
+          Icon(Icons.swap_horiz, color: color, size: size),
         ],
       ),
       tooltip: localizations.translate('language.changeLanguage'),

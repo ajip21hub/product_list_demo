@@ -1,11 +1,52 @@
 /// API Configuration Constants
 /// Contains all API-related settings, endpoints, and network configuration
+///
+/// ===========================================
+/// 🚨 MIGRASI KE .ENV IMPLEMENTATION
+/// ===========================================
+///
+/// 📚 KELEBIHAN MENGGUNAKAN .ENV vs HARDCODED:
+///
+/// ✅ **KEAMANAN**: API endpoint tidak lagi hardcoded di source code
+///    - Sebelumnya: 'https://dummyjson.com' visible di GitHub
+///    - Sekarang: Aman di .env file yang tidak di-commit
+///
+/// ✅ **FLEXIBILITAS**: Mudah switch API endpoint per environment
+///    - Development: https://dummyjson.com
+///    - Staging: https://staging-api.yourdomain.com
+///    - Production: https://api.yourdomain.com
+///    - Tanpa perlu code deployment!
+///
+/// ✅ **MAINTAINABILITY**: Centralized configuration management
+///    - Semua API settings di .env file
+///    - Mudah update tanpa touch source code
+///    - Clear separation antara configuration dan logic
+///
+/// ✅ **COMPLIANCE**: Follow 12-Factor App methodology
+///    - Store config in the environment
+///    - Audit-friendly untuk security compliance
+///    - Industry standard untuk modern apps
+
+import '../../core/services/environment_service.dart';
 
 class APIConstants {
-  // Base URL Configuration
-  static const String baseUrl = 'https://dummyjson.com';
-  static const String apiVersion = 'v1';
-  static const String timeoutDuration = '30s';
+  // ===========================================
+  // 🌐 BASE URL CONFIGURATION (FROM .ENV)
+  // ===========================================
+  ///
+  /// 📝 PENGGUNAAN:
+  /// ```dart
+  /// final url = '${APIConstants.baseUrl}${APIConstants.productsEndpoint}';
+  /// ```
+  ///
+  /// 💡 KELEBIHAN: Base URL bisa diubah per environment di .env file
+  static String get baseUrl => EnvironmentService.baseUrl;
+  static String get apiVersion => EnvironmentService.apiVersion;
+
+  // Network configuration from environment
+  static Duration get timeoutDuration =>
+      Duration(seconds: EnvironmentService.requestTimeoutSeconds);
+  static String get timeoutDurationString => '${EnvironmentService.requestTimeoutSeconds}s';
 
   // API Endpoints
   static const String productsEndpoint = '/products';
@@ -37,16 +78,33 @@ class APIConstants {
   static const int maxRequestsPerHour = 1000;
   static const Duration rateLimitResetDuration = Duration(minutes: 1);
 
-  // Retry Configuration
-  static const int maxRetryAttempts = 3;
+  // ===========================================
+  // 🔄 RETRY CONFIGURATION (FROM .ENV)
+  // ===========================================
+  ///
+  /// 📝 KELEBIHAN: Retry attempts bisa disesuaikan per environment
+  /// - Development: 3 attempts (fast iteration)
+  /// - Staging: 5 attempts (thorough testing)
+  /// - Production: 3 attempts (user experience priority)
+  static int get maxRetryAttempts => EnvironmentService.maxRetries;
   static const Duration retryDelay = Duration(seconds: 1);
   static const Duration retryBackoffMultiplier = Duration(seconds: 2);
   static const List<int> retryableStatusCodes = [408, 429, 500, 502, 503, 504];
 
-  // Connection Configuration
-  static const Duration connectionTimeout = Duration(seconds: 30);
-  static const Duration receiveTimeout = Duration(seconds: 30);
-  static const Duration sendTimeout = Duration(seconds: 30);
+  // ===========================================
+  // 🔗 CONNECTION CONFIGURATION (FROM .ENV)
+  // ===========================================
+  ///
+  /// 💡 KELEBIHAN: Timeout bisa disesuaikan per environment
+  /// - Development: 30 detik (development server)
+  /// - Staging: 20 detik (staging server)
+  /// - Production: 10 detik (production server)
+  static Duration get connectionTimeout =>
+      Duration(seconds: EnvironmentService.connectionTimeoutSeconds);
+  static Duration get receiveTimeout =>
+      Duration(seconds: EnvironmentService.requestTimeoutSeconds);
+  static Duration get sendTimeout =>
+      Duration(seconds: EnvironmentService.connectionTimeoutSeconds);
   static const bool followRedirects = true;
   static const int maxRedirects = 5;
 
@@ -111,14 +169,40 @@ class APIConstants {
   static const String contentTypeFormData = 'multipart/form-data';
   static const String contentTypeUrlEncoded = 'application/x-www-form-urlencoded';
 
-  // Logging
-  static const bool enableNetworkLogging = true;
-  static const bool logRequestHeaders = true;
-  static const bool logResponseHeaders = true;
-  static const bool logRequestBody = false; // Set to false for production
-  static const bool logResponseBody = false; // Set to false for production
+  // ===========================================
+  // 📝 LOGGING CONFIGURATION (FROM .ENV)
+  // ===========================================
+  ///
+  /// 📚 KELEBIHAN MENGGUNAKAN .ENV UNTUK LOGGING:
+  ///
+  /// ✅ **DEVELOPMENT**: Full logging untuk debugging
+  /// - enableNetworkLogging: true
+  /// - logRequestHeaders: true
+  /// - logResponseHeaders: true
+  ///
+  /// ✅ **STAGING**: Selective logging untuk testing
+  /// - enableNetworkLogging: true
+  /// - logRequestHeaders: false
+  /// - logResponseHeaders: false
+  ///
+  /// ✅ **PRODUCTION**: Minimal logging untuk performance
+  /// - enableNetworkLogging: false
+  /// - logRequestHeaders: false
+  /// - logResponseHeaders: false
+  static bool get enableNetworkLogging => EnvironmentService.enableApiLogging;
+  static bool get logRequestHeaders => EnvironmentService.isDebug;
+  static bool get logResponseHeaders => EnvironmentService.isDebug;
+  static const bool logRequestBody = false; // Always false for security
+  static const bool logResponseBody = false; // Always false for security
 
-  // Development vs Production
-  static const bool isProduction = false;
-  static const String environment = 'development';
+  // ===========================================
+  // 🌍 ENVIRONMENT CONFIGURATION (FROM .ENV)
+  // ===========================================
+  ///
+  /// 💡 KELEBIHAN: Environment detection otomatis dari .env
+  /// - Tidak perlu manual configuration
+  /// - Consistent dengan environment variables lainnya
+  /// - Mudah untuk deployment pipelines
+  static bool get isProduction => EnvironmentService.isProduction;
+  static String get environment => EnvironmentService.currentEnvironment;
 }

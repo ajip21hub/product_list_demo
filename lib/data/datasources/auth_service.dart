@@ -5,24 +5,49 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import '../models/user.dart';
+import '../../core/services/environment_service.dart';
 
 class AuthService {
   static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
   static const String _tokenKey = 'auth_token';
   static const String _userKey = 'user_data';
 
-  // DummyJSON API demo credentials for testing
-  static const Map<String, String> _demoCredentials = {
-    'kminchelle': '0lelplR', // Valid DummyJSON credentials
-    'emilys': 'emilyspass', // Custom demo for fallback
-    'user': 'password', // Fallback credentials
+  // ===========================================
+  // 🚨 KEAMANAN DENGAN .ENV IMPLEMENTATION
+  // ===========================================
+  //
+  // 📚 KELEBIHAN MENGGUNAKAN .ENV vs HARDCODED:
+  //
+  // ✅ **KEAMANAN**: Credentials tidak lagi exposed di source code
+  //    - Sebelumnya: 'kminchelle': '0lelplR' terlihat di GitHub
+  //    - Sekarang: Aman di .env file yang tidak di-commit
+  //
+  // ✅ **FLEXIBILITAS**: Mudah rotate credentials tanpa code deployment
+  //    - Sebelumnya: Harus edit code, build, dan deploy
+  //    - Sekarang: Cukup update .env file
+  //
+  // ✅ **ENVIRONMENT-SPECIFIC**: Berbeda per environment
+  //    - Development: Gunakan DummyJSON credentials
+  //    - Staging: Gunakan test API credentials
+  //    - Production: Gunakan real API credentials
+  //
+  // ✅ **COMPLIANCE**: Follow security best practices
+  //    - Tidak ada credentials di version control
+  //    - Audit-friendly untuk security compliance
+  //    - Industry standard untuk configuration management
+
+  // Demo credentials now loaded securely from .env
+  static Map<String, String> get _demoCredentials => {
+    EnvironmentService.demoUsername: EnvironmentService.demoPassword,
+    EnvironmentService.demoUsername2: EnvironmentService.demoPassword2,
+    EnvironmentService.fallbackUsername: EnvironmentService.fallbackPassword,
   };
 
-  // DummyJSON API endpoints
-  static const String _baseUrl = 'https://dummyjson.com';
-  static const String _loginEndpoint = '$_baseUrl/auth/login';
-  static const String _meEndpoint = '$_baseUrl/auth/me';
-  static const String _usersEndpoint = '$_baseUrl/users';
+  // API endpoints now loaded from environment
+  static String get _baseUrl => EnvironmentService.baseUrl;
+  static String get _loginEndpoint => '$_baseUrl/auth/login';
+  static String get _meEndpoint => '$_baseUrl/auth/me';
+  static String get _usersEndpoint => '$_baseUrl/users';
 
   // Login with username and password using DummyJSON API
   Future<Map<String, dynamic>> login(String username, String password) async {
@@ -290,22 +315,25 @@ class AuthService {
   }
 
   // Get demo credentials list for UI display
+  ///
+  /// 📝 NOTE: Credentials sekarang di-load dari EnvironmentService (.env)
+  /// 💡 KELEBIHAN: UI display credentials bisa di-update tanpa code changes
   List<Map<String, String>> getDemoCredentials() {
     return [
       {
-        'username': 'kminchelle',
-        'password': '0lelplR',
-        'description': 'DummyJSON API User',
+        'username': EnvironmentService.demoUsername,
+        'password': EnvironmentService.demoPassword,
+        'description': 'DummyJSON API User (Primary)',
       },
       {
-        'username': 'emilys',
-        'password': 'emilyspass',
-        'description': 'Demo User',
+        'username': EnvironmentService.demoUsername2,
+        'password': EnvironmentService.demoPassword2,
+        'description': 'Demo User (Secondary)',
       },
       {
-        'username': 'user',
-        'password': 'password',
-        'description': 'Fallback User',
+        'username': EnvironmentService.fallbackUsername,
+        'password': EnvironmentService.fallbackPassword,
+        'description': 'Fallback User (Testing)',
       },
     ];
   }

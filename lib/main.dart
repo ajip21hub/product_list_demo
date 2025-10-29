@@ -6,9 +6,60 @@ import 'core/const/locale_constants.dart';
 import 'core/dependency_injection.dart';
 import 'core/localization/app_localizations.dart';
 import 'core/localization/localization_provider.dart';
+import 'core/services/environment_service.dart';
 import 'presentation/screens/main_navigation.dart';
 
-void main() {
+/// ===========================================
+/// 🚀 MAIN ENTRY POINT WITH .ENV INITIALIZATION
+/// ===========================================
+///
+/// 📚 KELEBIHAN MENGGUNAKAN .ENV DI STARTUP:
+///
+/// ✅ **EARLY INITIALIZATION**: Environment variables loaded sebelum app start
+///    - Semua services bisa mengakses environment variables
+///    - Tidak ada null reference issues
+///    - Safe fallback jika .env tidak ada
+///
+/// ✅ **CONFIGURATION FIRST**: Configuration di-load sebelum UI
+///    - API endpoints, credentials, dan settings siap
+///    - UI bisa menyesuaikan dengan environment
+///    - Error handling jika configuration invalid
+///
+/// ✅ **DEVELOPMENT FRIENDLY**: Debug informasi di startup
+///    - Print environment yang sedang aktif
+///    - Show API URL yang digunakan
+///    - Mudah troubleshooting configuration issues
+///
+/// 🚨 CARA PENGGUNAAN:
+/// 1. .env file harus ada di root project
+/// 2. EnvironmentService.initialize() dipanggil pertama kali
+/// 3. Semua dependency injection di-load setelah environment siap
+/// 4. App running dengan configuration yang benar
+
+void main() async {
+  // ===========================================
+  // 🔧 ENVIRONMENT INITIALIZATION (CRITICAL)
+  // ===========================================
+  ///
+  /// 📝 STEP 1: Load .env configuration
+  /// - Base URL, credentials, dan settings di-load
+  /// - Safe fallback jika file tidak ada
+  /// - Debug info printed (hanya di debug mode)
+  ///
+  /// 💡 KELEBIHAN: App tidak akan crash jika .env tidak ada
+  /// - Automatic fallback ke default values
+  /// - Development tetap berjalan
+  /// - Clear warning messages untuk developer
+
+  try {
+    await EnvironmentService.initialize();
+  } catch (e) {
+    // Fallback untuk development jika .env loading gagal
+    print('⚠️ Environment initialization failed: $e');
+    print('📋 Using default configuration for development');
+    // Continue with default values untuk development safety
+  }
+
   // Initialize dependency injection
   DependencyInjectionInitializer.initialize();
 
@@ -28,9 +79,36 @@ class MyApp extends ConsumerWidget {
     final languageState = ref.watch(languageProvider);
     final currentLocale = languageState.currentLocale;
 
+    // ===========================================
+    // 🎨 APP CONFIGURATION DENGAN .ENV VALUES
+    // ===========================================
+    ///
+    /// 📚 CONTOH PENGGUNAAN ENVIRONMENT VALUES DI UI:
+    ///
+    /// 💡 DEBUG MODE: Hide/show debug features
+    /// ```dart
+    /// if (EnvironmentService.isDebug) {
+    ///   return DebugPanel();
+    /// }
+    /// ```
+    ///
+    /// 💡 FEATURE FLAGS: Enable/disable features
+    /// ```dart
+    /// if (EnvironmentService.enableWishlist) {
+    ///   return WishlistButton();
+    /// }
+    /// ```
+    ///
+    /// 💡 ANIMATIONS: Control per-environment
+    /// ```dart
+    /// duration: Duration(
+    ///   milliseconds: EnvironmentService.animationDurationMs
+    /// ),
+    /// ```
+
     return MaterialApp(
       title: AppConstants.appName,
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: EnvironmentService.isDebug,
 
       // Localization configuration
       locale: currentLocale,

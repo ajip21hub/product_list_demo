@@ -9,13 +9,18 @@ import '../../core/localization/app_localizations.dart';
 import '../widgets/state_widgets.dart';
 import '../widgets/product_card.dart';
 import 'product_detail_screen.dart';
-import 'wishlist_screen.dart';
+import 'main_navigation.dart';
 
-class ProductListScreen extends ConsumerWidget {
+class ProductListScreen extends ConsumerStatefulWidget {
   const ProductListScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ProductListScreen> createState() => _ProductListScreenState();
+}
+
+class _ProductListScreenState extends ConsumerState<ProductListScreen> {
+  @override
+  Widget build(BuildContext context) {
     // Get localizations instance
     final localizations = AppLocalizations.of(context)!;
 
@@ -37,7 +42,10 @@ class ProductListScreen extends ConsumerWidget {
     // Initialize data on first build
     ref.listen(productListProvider, (previous, next) {
       // Only load data if it's the first time and no data exists
-      if (previous == null && next.products.isEmpty && !next.isLoading && next.error == null) {
+      if (previous == null &&
+          next.products.isEmpty &&
+          !next.isLoading &&
+          next.error == null) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           productListNotifier.loadProducts();
         });
@@ -60,17 +68,12 @@ class ProductListScreen extends ConsumerWidget {
         foregroundColor: Colors.white,
         elevation: 0,
         actions: [
-          // Wishlist button
+          // Wishlist button - activates bottom navigation
           Stack(
             children: [
               IconButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const WishlistScreen(),
-                    ),
-                  );
+                  _navigateToWishlist();
                 },
                 icon: const Icon(Icons.favorite),
               ),
@@ -90,10 +93,7 @@ class ProductListScreen extends ConsumerWidget {
                     ),
                     child: Text(
                       '${wishlistState.itemCount}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                      ),
+                      style: const TextStyle(color: Colors.white, fontSize: 12),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -105,14 +105,15 @@ class ProductListScreen extends ConsumerWidget {
             children: [
               IconButton(
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        '${localizations.translate('cart.title')}: ${cartState.itemCount} ${localizations.translate(cartState.itemCount == 1 ? 'cart.item' : 'cart.items')} - \$${cartState.totalAmount.toStringAsFixed(2)}',
-                      ),
-                      duration: const Duration(seconds: 2),
-                    ),
-                  );
+                  // ScaffoldMessenger.of(context).showSnackBar(
+                  //   SnackBar(
+                  //     content: Text(
+                  //       '${localizations.translate('cart.title')}: ${cartState.itemCount} ${localizations.translate(cartState.itemCount == 1 ? 'cart.item' : 'cart.items')} - \$${cartState.totalAmount.toStringAsFixed(2)}',
+                  //     ),
+                  //     duration: const Duration(seconds: 2),
+                  //   ),
+
+                  _navigateToCart();
                 },
                 icon: const Icon(Icons.shopping_cart),
               ),
@@ -132,10 +133,7 @@ class ProductListScreen extends ConsumerWidget {
                     ),
                     child: Text(
                       '${cartState.itemCount}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                      ),
+                      style: const TextStyle(color: Colors.white, fontSize: 12),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -145,7 +143,9 @@ class ProductListScreen extends ConsumerWidget {
           IconButton(
             onPressed: () {
               SnackBar snackBar = SnackBar(
-                content: Text(localizations.translate('profile.featureComingSoon')),
+                content: Text(
+                  localizations.translate('profile.featureComingSoon'),
+                ),
                 duration: const Duration(seconds: 2),
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -156,14 +156,35 @@ class ProductListScreen extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          _buildCategoryFilter(context, localizations, categories, selectedCategory, productListNotifier),
-          Expanded(child: _buildBody(context, localizations, products, isLoading, error, productListNotifier)),
+          _buildCategoryFilter(
+            context,
+            localizations,
+            categories,
+            selectedCategory,
+            productListNotifier,
+          ),
+          Expanded(
+            child: _buildBody(
+              context,
+              localizations,
+              products,
+              isLoading,
+              error,
+              productListNotifier,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildCategoryFilter(BuildContext context, AppLocalizations localizations, List<String> categories, String selectedCategory, ProductListNotifier productListNotifier) {
+  Widget _buildCategoryFilter(
+    BuildContext context,
+    AppLocalizations localizations,
+    List<String> categories,
+    String selectedCategory,
+    ProductListNotifier productListNotifier,
+  ) {
     return Container(
       height: 60,
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -173,7 +194,9 @@ class ProductListScreen extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12),
         itemCount: categories.length + 1,
         itemBuilder: (context, index) {
-          final category = index == 0 ? localizations.translate('product.all') : categories[index - 1];
+          final category = index == 0
+              ? localizations.translate('product.all')
+              : categories[index - 1];
           final isSelected = selectedCategory == category;
 
           return Padding(
@@ -199,7 +222,14 @@ class ProductListScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildBody(BuildContext context, AppLocalizations localizations, List<Product> products, bool isLoading, String? error, ProductListNotifier productListNotifier) {
+  Widget _buildBody(
+    BuildContext context,
+    AppLocalizations localizations,
+    List<Product> products,
+    bool isLoading,
+    String? error,
+    ProductListNotifier productListNotifier,
+  ) {
     if (isLoading) {
       return _buildLoadingState(localizations);
     }
@@ -221,7 +251,11 @@ class ProductListScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildErrorState(AppLocalizations localizations, String error, ProductListNotifier productListNotifier) {
+  Widget _buildErrorState(
+    AppLocalizations localizations,
+    String error,
+    ProductListNotifier productListNotifier,
+  ) {
     return ErrorStateWidget(
       message: localizations.translate('product.error', args: {'error': error}),
       onRetry: () => productListNotifier.loadProducts(),
@@ -235,7 +269,11 @@ class ProductListScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildProductGrid(BuildContext context, List<Product> products, ProductListNotifier productListNotifier) {
+  Widget _buildProductGrid(
+    BuildContext context,
+    List<Product> products,
+    ProductListNotifier productListNotifier,
+  ) {
     return RefreshIndicator(
       onRefresh: () => productListNotifier.refresh(),
       child: GridView.builder(
@@ -264,5 +302,21 @@ class ProductListScreen extends ConsumerWidget {
         builder: (context) => ProductDetailScreen(product: product),
       ),
     );
+  }
+
+  void _navigateToWishlist() {
+    // Find the MainNavigation widget and activate the wishlist tab
+    final mainNavigationState = MainNavigation.of(context);
+    if (mainNavigationState != null) {
+      mainNavigationState.navigateToWishlistTab();
+    }
+  }
+
+  void _navigateToCart() {
+    // Find the MainNavigation widget and activate the cart tab
+    final mainNavigationState = MainNavigation.of(context);
+    if (mainNavigationState != null) {
+      mainNavigationState.navigateToAddToCartTab();
+    }
   }
 }

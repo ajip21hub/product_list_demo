@@ -20,10 +20,12 @@
 /// ```
 library;
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/legacy.dart';
-import '../../data/models/product.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
 import '../../data/models/cart_item.dart';
+import '../../data/models/product.dart';
+
+part 'cart_provider_riverpod.g.dart';
 
 // State class for shopping cart
 class CartState {
@@ -90,9 +92,14 @@ class CartState {
   String toString() => 'CartState(itemCount: $itemCount, totalAmount: $totalAmount, isLoading: $isLoading)';
 }
 
-// Notifier class for cart state management
-class CartNotifier extends StateNotifier<CartState> {
-  CartNotifier() : super(const CartState());
+/// Lab 1B: dulu `StateNotifier<CartState>` + `StateNotifierProvider`.
+/// Sekarang Notifier + codegen: state awal dibuat di build(), provider
+/// `cartProvider` di-generate. keepAlive agar isi keranjang tidak hilang
+/// saat tidak ada widget yang menontonnya.
+@Riverpod(keepAlive: true)
+class Cart extends _$Cart {
+  @override
+  CartState build() => const CartState();
 
   // Add item to cart
   void addItem(Product product, {int quantity = 1}) {
@@ -183,43 +190,31 @@ class CartNotifier extends StateNotifier<CartState> {
   }
 }
 
-// Provider definition
-final cartProvider = StateNotifierProvider<CartNotifier, CartState>((ref) {
-  return CartNotifier();
-});
+// Derived state: dihitung ulang hanya saat keranjang berubah.
+@riverpod
+int cartItemCount(Ref ref) => ref.watch(cartProvider).itemCount;
 
-// Convenience providers for commonly used values
-final cartItemCountProvider = Provider<int>((ref) {
-  return ref.watch(cartProvider).itemCount;
-});
+@riverpod
+double cartTotalAmount(Ref ref) => ref.watch(cartProvider).totalAmount;
 
-final cartTotalAmountProvider = Provider<double>((ref) {
-  return ref.watch(cartProvider).totalAmount;
-});
+@riverpod
+List<CartItem> cartItems(Ref ref) => ref.watch(cartProvider).items;
 
-final cartItemsProvider = Provider<List<CartItem>>((ref) {
-  return ref.watch(cartProvider).items;
-});
+@riverpod
+bool cartIsEmpty(Ref ref) => ref.watch(cartProvider).isEmpty;
 
-final cartIsEmptyProvider = Provider<bool>((ref) {
-  return ref.watch(cartProvider).isEmpty;
-});
+@riverpod
+bool cartIsLoading(Ref ref) => ref.watch(cartProvider).isLoading;
 
-final cartIsLoadingProvider = Provider<bool>((ref) {
-  return ref.watch(cartProvider).isLoading;
-});
+/// Family lama `Provider.family<bool, Product>` menjadi parameter fungsi.
+@riverpod
+bool productInCart(Ref ref, Product product) =>
+    ref.watch(cartProvider).isInCart(product);
 
-// Provider to check if specific product is in cart
-final productInCartProvider = Provider.family<bool, Product>((ref, product) {
-  return ref.watch(cartProvider).isInCart(product);
-});
+@riverpod
+int productQuantity(Ref ref, Product product) =>
+    ref.watch(cartProvider).getQuantity(product);
 
-// Provider to get quantity of specific product in cart
-final productQuantityProvider = Provider.family<int, Product>((ref, product) {
-  return ref.watch(cartProvider).getQuantity(product);
-});
-
-// Provider to get total amount for specific product in cart
-final productTotalProvider = Provider.family<double, Product>((ref, product) {
-  return ref.watch(cartProvider).getItemTotal(product);
-});
+@riverpod
+double productTotal(Ref ref, Product product) =>
+    ref.watch(cartProvider).getItemTotal(product);

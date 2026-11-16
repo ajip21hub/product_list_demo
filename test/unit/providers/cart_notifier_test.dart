@@ -3,8 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:product_list_demo/data/models/product.dart';
 import 'package:product_list_demo/presentation/providers/cart_provider_riverpod.dart';
 
-/// Test perilaku keranjang. Pada Lab 1B (Pelatihan Lanjutan), CartNotifier
-/// dimigrasikan ke Notifier + codegen; test ini harus tetap lulus.
+/// Test perilaku keranjang. Ditulis sebelum Lab 1B dan tetap lulus setelah
+/// CartNotifier dimigrasikan ke Notifier + codegen (kelas `Cart`).
 Product _product(int id, double price) => Product(
   id: id,
   title: 'Produk $id',
@@ -20,8 +20,8 @@ Product _product(int id, double price) => Product(
 void main() {
   late ProviderContainer container;
 
-  setUp(() => container = ProviderContainer());
-  tearDown(() => container.dispose());
+  // Riverpod 3: ProviderContainer.test() otomatis di-dispose di akhir test.
+  setUp(() => container = ProviderContainer.test());
 
   test('addItem menambah jumlah dan total', () {
     final cart = container.read(cartProvider.notifier);
@@ -45,6 +45,13 @@ void main() {
 
     cart.removeItem(p);
     expect(container.read(cartProvider).isEmpty, isTrue);
+  });
+
+  test('productInCart mengikuti isi keranjang', () {
+    final p = _product(7, 3);
+    expect(container.read(productInCartProvider(p)), isFalse);
+    container.read(cartProvider.notifier).addItem(p);
+    expect(container.read(productInCartProvider(p)), isTrue);
   });
 
   test('clearCart mengosongkan keranjang', () {

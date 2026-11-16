@@ -18,7 +18,6 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/repositories/product_repository.dart';
-import '../../data/repositories/product_repository_impl.dart';
 import '../../data/datasources/api_service.dart';
 import '../../data/models/product.dart';
 import '../../core/dependency_injection.dart';
@@ -41,9 +40,6 @@ final productsProvider = AsyncNotifierProvider<ProductsNotifier, List<Product>>(
 // Async notifier for products with refresh capability
 class ProductsNotifier extends AsyncNotifier<List<Product>> {
   late final ProductRepository _repository;
-  List<Product> _cachedProducts = [];
-  DateTime? _lastFetchTime;
-  static const Duration _cacheDuration = Duration(minutes: 5);
 
   @override
   Future<List<Product>> build() async {
@@ -69,8 +65,6 @@ class ProductsNotifier extends AsyncNotifier<List<Product>> {
       state = result.fold(
         onFailure: (error) => AsyncValue.error(error, StackTrace.current),
         onSuccess: (products) {
-          _cachedProducts = products;
-          _lastFetchTime = DateTime.now();
           return AsyncValue.data(products);
         },
       );
@@ -85,15 +79,7 @@ class ProductsNotifier extends AsyncNotifier<List<Product>> {
   }
 
   Future<void> forceRefresh() async {
-    _cachedProducts = [];
-    _lastFetchTime = null;
     await refresh();
-  }
-
-  /// Check if cache is still valid
-  bool get _isCacheValid {
-    if (_lastFetchTime == null) return false;
-    return DateTime.now().difference(_lastFetchTime!) < _cacheDuration;
   }
 }
 

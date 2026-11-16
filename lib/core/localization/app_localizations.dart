@@ -32,7 +32,6 @@ class AppLocalizations {
   AppLocalizations(this.locale);
 
   // Static instance cache for performance
-  static final Map<String, AppLocalizations> _instances = {};
 
   // Translation cache for each locale
   static final Map<String, Map<String, dynamic>> _translations = {};
@@ -82,7 +81,7 @@ class AppLocalizations {
 
   /// Creates an AppLocalizations delegate for the app
   ///
-  /// Returns a LocalizationsDelegate<AppLocalizations> instance
+  /// Returns a `LocalizationsDelegate<AppLocalizations>` instance
   static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
   /// Translates a key to the current locale

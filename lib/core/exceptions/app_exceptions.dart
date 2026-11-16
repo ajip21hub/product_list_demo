@@ -36,7 +36,10 @@ abstract class AppException implements Exception {
   });
 
   @override
-  String toString() => 'AppException: $message${code != null ? ' (Code: $code)' : ''}';
+  String toString() => '$typeName: $message${code != null ? ' (Code: $code)' : ''}';
+
+  /// Nama yang ditampilkan di toString(); subclass menimpanya.
+  String get typeName => 'AppException';
 }
 
 // Network-related exceptions
@@ -59,7 +62,7 @@ class NetworkException extends AppException {
         );
 
   @override
-  String toString() => 'NetworkException: $message${statusCode != null ? ' (Status: $statusCode)' : ''}${url != null ? ' (URL: $url)' : ''}';
+  String toString() => '$runtimeType: $message${code != null ? ' (Code: $code)' : ''}${statusCode != null ? ' (Status: $statusCode)' : ''}${url != null ? ' (URL: $url)' : ''}';
 }
 
 class ServerException extends NetworkException {
@@ -103,6 +106,9 @@ class TimeoutException extends NetworkException {
 }
 
 class ConnectionException extends NetworkException {
+  @override
+  String get typeName => 'ConnectionException';
+
   const ConnectionException({
     required String message,
     String? url,
@@ -120,6 +126,9 @@ class ConnectionException extends NetworkException {
 
 // Authentication exceptions
 class AuthenticationException extends AppException {
+  @override
+  String get typeName => 'AuthenticationException';
+
   const AuthenticationException({
     required String message,
     String? code,
@@ -134,6 +143,9 @@ class AuthenticationException extends AppException {
 }
 
 class InvalidCredentialsException extends AuthenticationException {
+  @override
+  String get typeName => 'InvalidCredentialsException';
+
   const InvalidCredentialsException({
     required String message,
     String? code,
@@ -168,6 +180,9 @@ class TokenExpiredException extends AuthenticationException {
 }
 
 class SessionInvalidException extends AuthenticationException {
+  @override
+  String get typeName => 'SessionInvalidException';
+
   const SessionInvalidException({
     required String message,
     String? code,
@@ -232,6 +247,9 @@ class RequiredFieldException extends ValidationException {
 
 // Data-related exceptions
 class DataException extends AppException {
+  @override
+  String get typeName => 'DataException';
+
   const DataException({
     required String message,
     String? code,
@@ -246,6 +264,9 @@ class DataException extends AppException {
 }
 
 class NotFoundException extends DataException {
+  @override
+  String get typeName => 'NotFoundException';
+
   final String? resourceType;
   final String? resourceId;
 
@@ -268,6 +289,9 @@ class NotFoundException extends DataException {
 }
 
 class DuplicateResourceException extends DataException {
+  @override
+  String get typeName => 'DuplicateResourceException';
+
   final String? resourceType;
   final String? duplicateField;
 
@@ -288,6 +312,9 @@ class DuplicateResourceException extends DataException {
 
 // Cache exceptions
 class CacheException extends AppException {
+  @override
+  String get typeName => 'CacheException';
+
   const CacheException({
     required String message,
     String? code,
@@ -302,6 +329,9 @@ class CacheException extends AppException {
 }
 
 class CacheMissException extends CacheException {
+  @override
+  String get typeName => 'CacheMissException';
+
   final String? cacheKey;
 
   const CacheMissException({
@@ -320,6 +350,9 @@ class CacheMissException extends CacheException {
 
 // Business logic exceptions
 class BusinessLogicException extends AppException {
+  @override
+  String get typeName => 'BusinessLogicException';
+
   const BusinessLogicException({
     required String message,
     String? code,
@@ -334,6 +367,9 @@ class BusinessLogicException extends AppException {
 }
 
 class InsufficientPermissionException extends BusinessLogicException {
+  @override
+  String get typeName => 'InsufficientPermissionException';
+
   final String? requiredPermission;
   final String? userRole;
 
@@ -373,6 +409,9 @@ class ResourceLockedException extends BusinessLogicException {
 
 // Configuration exceptions
 class ConfigurationException extends AppException {
+  @override
+  String get typeName => 'ConfigurationException';
+
   const ConfigurationException({
     required String message,
     String? code,

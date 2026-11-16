@@ -130,7 +130,7 @@ class ProductRepositoryImpl implements ProductRepository {
       // First, get the target product to determine its category
       final targetProductResult = await getProductById(productId);
 
-      return targetProductResult.fold(
+      return await targetProductResult.fold(
         onFailure: (error) => Result.failure(error),
         onSuccess: (targetProduct) async {
           if (targetProduct == null) {
@@ -178,7 +178,7 @@ class ProductRepositoryImpl implements ProductRepository {
     try {
       final productResult = await getProductById(productId);
 
-      return productResult.fold(
+      return await productResult.fold(
         onFailure: (error) => Result.failure(error),
         onSuccess: (product) {
           if (product == null) {
@@ -202,55 +202,4 @@ class ProductRepositoryImpl implements ProductRepository {
     }
   }
 
-  /// Calculate rating distribution for visualization
-  Map<String, int>? _calculateRatingDistribution(double rating) {
-    // Simulate rating distribution based on average rating
-    // In a real app, this would come from the API
-    final avgRating = rating;
-
-    // Create a simple distribution based on average rating
-    // Since we don't have review count, we'll simulate it
-    final baseDistribution = {
-      '5': 0,
-      '4': 0,
-      '3': 0,
-      '2': 0,
-      '1': 0,
-    };
-
-    // Simulate distribution based on average rating
-    if (avgRating >= 4.5) {
-      baseDistribution['5'] = 60;
-      baseDistribution['4'] = 25;
-      baseDistribution['3'] = 10;
-      baseDistribution['2'] = 3;
-      baseDistribution['1'] = 2;
-    } else if (avgRating >= 4.0) {
-      baseDistribution['5'] = 40;
-      baseDistribution['4'] = 35;
-      baseDistribution['3'] = 15;
-      baseDistribution['2'] = 5;
-      baseDistribution['1'] = 5;
-    } else if (avgRating >= 3.5) {
-      baseDistribution['5'] = 20;
-      baseDistribution['4'] = 30;
-      baseDistribution['3'] = 30;
-      baseDistribution['2'] = 10;
-      baseDistribution['1'] = 10;
-    } else if (avgRating >= 3.0) {
-      baseDistribution['5'] = 10;
-      baseDistribution['4'] = 20;
-      baseDistribution['3'] = 35;
-      baseDistribution['2'] = 20;
-      baseDistribution['1'] = 15;
-    } else {
-      baseDistribution['5'] = 5;
-      baseDistribution['4'] = 10;
-      baseDistribution['3'] = 20;
-      baseDistribution['2'] = 30;
-      baseDistribution['1'] = 35;
-    }
-
-    return baseDistribution;
-  }
 }

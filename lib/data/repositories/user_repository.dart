@@ -36,7 +36,7 @@ abstract class UserRepository {
 
   /// Get current user preferences
   ///
-  /// Returns [Result<Map<String, dynamic>>> with user preferences or error
+  /// Returns `Result<Map<String, dynamic>>` with user preferences or error
   Future<Result<Map<String, dynamic>>> getUserPreferences();
 
   /// Update user preferences
@@ -55,7 +55,7 @@ abstract class UserRepository {
   ///
   /// [userId] - The ID of the user
   /// [limit] - Maximum number of activities to return
-  /// Returns [Result<List<UserActivity>>> with activities or error
+  /// Returns `Result<List<UserActivity>>` with activities or error
   Future<Result<List<UserActivity>>> getUserActivityHistory(int userId, {int limit = 10});
 
   /// Upload user avatar

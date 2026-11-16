@@ -345,6 +345,7 @@ class LanguageSwitcher extends ConsumerWidget {
 
     // Change language
     final success = await languageNotifier.changeLanguage(newLanguageCode);
+    if (!context.mounted) return;
 
     if (success) {
       // Show success message

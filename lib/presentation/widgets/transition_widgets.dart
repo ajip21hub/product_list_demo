@@ -533,25 +533,6 @@ class SmoothAnimatedSwitcher extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget buildTransition(Widget child) {
-      switch (transitionType) {
-        case TransitionType.fade:
-          return FadeTransition(
-            opacity: const AlwaysStoppedAnimation(1.0),
-            child: child,
-          );
-
-        case TransitionType.scale:
-          return ScaleTransition(
-            scale: const AlwaysStoppedAnimation(1.0),
-            child: child,
-          );
-
-        default:
-          return child;
-      }
-    }
-
     return AnimatedSwitcher(
       duration: duration,
       transitionBuilder: (child, animation) {

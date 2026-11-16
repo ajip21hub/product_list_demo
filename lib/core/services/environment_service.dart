@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// ===========================================
@@ -54,13 +55,13 @@ class EnvironmentService {
 
       // Debug: Print loaded environment (hanya di debug mode)
       if (isDebug) {
-        print('🔧 Environment initialized: $currentEnvironment');
-        print('🌐 API Base URL: $baseUrl');
+        debugPrint('🔧 Environment initialized: $currentEnvironment');
+        debugPrint('🌐 API Base URL: $baseUrl');
       }
     } catch (e) {
       // Fallback jika .env tidak ada
-      print('⚠️ Warning: Failed to load .env file: $e');
-      print('📋 Using default values for development');
+      debugPrint('⚠️ Warning: Failed to load .env file: $e');
+      debugPrint('📋 Using default values for development');
       _isInitialized = true;
     }
   }

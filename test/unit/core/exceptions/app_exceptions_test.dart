@@ -16,9 +16,11 @@
 /// - ✅ Exception hierarchy validation
 /// - ✅ Error message formatting
 
+import 'dart:async' as async;
+
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../lib/core/exceptions/app_exceptions.dart';
+import 'package:product_list_demo/core/exceptions/app_exceptions.dart';
 
 void main() {
   group('AppException Base Class', () {
@@ -109,7 +111,7 @@ void main() {
     test('should create NetworkException with original error', () {
       // Arrange
       const message = 'Network timeout';
-      final originalError = TimeoutException('Request timed out', const Duration(seconds: 30));
+      final originalError = async.TimeoutException('Request timed out', const Duration(seconds: 30));
 
       // Act
       final exception = NetworkException(

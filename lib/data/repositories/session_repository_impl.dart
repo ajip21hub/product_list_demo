@@ -24,7 +24,6 @@ import 'dart:async';
 import '../repositories/session_repository.dart';
 import '../repositories/product_repository.dart';
 import '../datasources/auth_service.dart';
-import '../../core/const/constants.dart';
 
 /// Concrete implementation of SessionRepository
 class SessionRepositoryImpl implements SessionRepository {
@@ -135,7 +134,7 @@ class SessionRepositoryImpl implements SessionRepository {
     try {
       final currentSessionResult = await getCurrentSession();
 
-      return currentSessionResult.fold(
+      return await currentSessionResult.fold(
         onFailure: (error) => Result.failure(error),
         onSuccess: (session) async {
           if (session == null) {
@@ -171,7 +170,7 @@ class SessionRepositoryImpl implements SessionRepository {
     try {
       final sessionResult = await getCurrentSession();
 
-      return sessionResult.fold(
+      return await sessionResult.fold(
         onFailure: (error) => Result.failure(error),
         onSuccess: (session) {
           final isValid = session != null && session.isValid;
@@ -188,7 +187,7 @@ class SessionRepositoryImpl implements SessionRepository {
     try {
       final currentSessionResult = await getCurrentSession();
 
-      return currentSessionResult.fold(
+      return await currentSessionResult.fold(
         onFailure: (error) => Result.failure(error),
         onSuccess: (session) async {
           if (session == null) {

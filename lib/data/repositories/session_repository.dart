@@ -105,7 +105,7 @@ abstract class SessionRepository {
   /// Get all active sessions for user
   ///
   /// [userId] - The ID of the user
-  /// Returns [Result<List<UserSession>>> with active sessions or error
+  /// Returns `Result<List<UserSession>>` with active sessions or error
   Future<Result<List<UserSession>>> getUserSessions(int userId);
 
   /// Revoke specific session

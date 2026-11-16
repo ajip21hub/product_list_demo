@@ -55,8 +55,8 @@ void main() async {
     await EnvironmentService.initialize();
   } catch (e) {
     // Fallback untuk development jika .env loading gagal
-    print('⚠️ Environment initialization failed: $e');
-    print('📋 Using default configuration for development');
+    debugPrint('⚠️ Environment initialization failed: $e');
+    debugPrint('📋 Using default configuration for development');
     // Continue with default values untuk development safety
   }
 

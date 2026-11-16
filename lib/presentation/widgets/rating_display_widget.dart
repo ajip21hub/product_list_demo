@@ -12,8 +12,9 @@
 ///   size: RatingDisplaySize.small,
 /// )
 /// ```
+library;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../core/const/constants.dart';
 
 enum RatingDisplaySize {
@@ -32,7 +33,7 @@ class RatingDisplayWidget extends StatelessWidget {
   final MainAxisAlignment alignment;
 
   const RatingDisplayWidget({
-    Key? key,
+    super.key,
     required this.rating,
     this.count,
     this.size = RatingDisplaySize.small,
@@ -40,7 +41,7 @@ class RatingDisplayWidget extends StatelessWidget {
     this.textColor,
     this.showCount = true,
     this.alignment = MainAxisAlignment.start,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

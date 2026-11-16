@@ -15,6 +15,7 @@
 /// final productsAsync = ref.watch(productsProvider);
 /// final repository = ref.read(productRepositoryProvider);
 /// ```
+library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/repositories/product_repository.dart';
@@ -52,7 +53,7 @@ class ProductsNotifier extends AsyncNotifier<List<Product>> {
     return state.when(
       data: (products) => products,
       loading: () => [],
-      error: (_, __) => [],
+      error: (_, _) => [],
     );
   }
 
@@ -102,7 +103,7 @@ class ProductsByCategoryNotifier extends AsyncNotifier<List<Product>> {
     return state.when(
       data: (products) => products,
       loading: () => [],
-      error: (_, __) => [],
+      error: (_, _) => [],
     );
   }
 
@@ -156,7 +157,7 @@ class FeaturedProductsNotifier extends AsyncNotifier<List<Product>> {
     return state.when(
       data: (products) => products,
       loading: () => [],
-      error: (_, __) => [],
+      error: (_, _) => [],
     );
   }
 
@@ -203,7 +204,7 @@ class SearchResultsNotifier extends AsyncNotifier<List<Product>> {
     return state.when(
       data: (products) => products,
       loading: () => [],
-      error: (_, __) => [],
+      error: (_, _) => [],
     );
   }
 
@@ -247,7 +248,7 @@ class ProductByIdNotifier extends AsyncNotifier<Product?> {
     return state.when(
       data: (product) => product,
       loading: () => null,
-      error: (_, __) => null,
+      error: (_, _) => null,
     );
   }
 
@@ -295,7 +296,7 @@ class CategoriesNotifier extends AsyncNotifier<List<String>> {
     return state.when(
       data: (categories) => categories,
       loading: () => [],
-      error: (_, __) => [],
+      error: (_, _) => [],
     );
   }
 
@@ -332,7 +333,7 @@ final featuredProductsCountProvider = Provider<int>((ref) {
   return ref.watch(featuredProductsProvider).when(
     data: (products) => products.length,
     loading: () => 0,
-    error: (_, __) => 0,
+    error: (_, _) => 0,
   );
 });
 
@@ -340,6 +341,6 @@ final searchResultsCountProvider = Provider<int>((ref) {
   return ref.watch(searchResultsProvider).when(
     data: (products) => products.length,
     loading: () => 0,
-    error: (_, __) => 0,
+    error: (_, _) => 0,
   );
 });

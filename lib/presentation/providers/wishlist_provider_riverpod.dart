@@ -18,8 +18,10 @@
 /// // Check if product is favorited
 /// final isFavorited = ref.watch(isProductFavoritedProvider(product));
 /// ```
+library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../data/models/product.dart';
 
 // State class for wishlist

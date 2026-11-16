@@ -18,8 +18,10 @@
 /// // Update quantity
 /// cartNotifier.updateQuantity(product, 3);
 /// ```
+library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../data/models/product.dart';
 import '../../data/models/cart_item.dart';
 

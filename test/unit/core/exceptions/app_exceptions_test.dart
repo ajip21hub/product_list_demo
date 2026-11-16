@@ -15,6 +15,7 @@
 /// - ✅ ValidationException creation
 /// - ✅ Exception hierarchy validation
 /// - ✅ Error message formatting
+library;
 
 import 'dart:async' as async;
 

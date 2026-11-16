@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../core/localization/app_localizations.dart';
 import '../widgets/liquid_bottom_nav.dart';
 import 'product_list_screen.dart';

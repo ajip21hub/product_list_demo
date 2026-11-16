@@ -1,5 +1,6 @@
 /// Application-wide constants
 /// Contains app metadata, version info, and general configuration
+library;
 
 class AppConstants {
   // App Information

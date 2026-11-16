@@ -15,6 +15,7 @@
 /// final repository = SessionRepositoryImpl(tokenService, secureStorage);
 /// final result = await repository.createSession(userData);
 /// ```
+library;
 
 import 'product_repository.dart';
 

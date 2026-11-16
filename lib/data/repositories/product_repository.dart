@@ -15,6 +15,7 @@
 /// final repository = ProductRepositoryImpl(apiService);
 /// final products = await repository.getProducts();
 /// ```
+library;
 
 import '../../core/types/result.dart';
 import '../models/product.dart';

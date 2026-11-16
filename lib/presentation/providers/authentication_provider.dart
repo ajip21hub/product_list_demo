@@ -21,8 +21,10 @@
 /// // Logout
 /// await authNotifier.logout();
 /// ```
+library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../data/repositories/session_repository.dart';
 import '../../data/repositories/user_repository.dart';
 import '../../data/models/user.dart';

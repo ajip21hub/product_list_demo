@@ -26,6 +26,7 @@
 ///    - Store config in the environment
 ///    - Audit-friendly untuk security compliance
 ///    - Industry standard untuk modern apps
+library;
 
 import '../../core/services/environment_service.dart';
 

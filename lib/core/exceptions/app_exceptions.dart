@@ -20,6 +20,7 @@
 ///   print('Validation error: ${e.errors}');
 /// }
 /// ```
+library;
 
 // Base application exception
 abstract class AppException implements Exception {
@@ -48,18 +49,13 @@ class NetworkException extends AppException {
   final String? url;
 
   const NetworkException({
-    required String message,
+    required super.message,
     this.statusCode,
     this.url,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 
   @override
   String toString() => '$runtimeType: $message${code != null ? ' (Code: $code)' : ''}${statusCode != null ? ' (Status: $statusCode)' : ''}${url != null ? ' (URL: $url)' : ''}';
@@ -67,39 +63,26 @@ class NetworkException extends AppException {
 
 class ServerException extends NetworkException {
   const ServerException({
-    required String message,
-    required int statusCode,
-    String? url,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          statusCode: statusCode,
-          url: url,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    required super.message,
+    required int super.statusCode,
+    super.url,
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 }
 
 class TimeoutException extends NetworkException {
   final Duration timeout;
 
   const TimeoutException({
-    required String message,
+    required super.message,
     required this.timeout,
-    String? url,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          url: url,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    super.url,
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 
   @override
   String toString() => 'TimeoutException: $message (Timeout: ${timeout.inSeconds}s)';
@@ -110,18 +93,12 @@ class ConnectionException extends NetworkException {
   String get typeName => 'ConnectionException';
 
   const ConnectionException({
-    required String message,
-    String? url,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          url: url,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    required super.message,
+    super.url,
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 }
 
 // Authentication exceptions
@@ -130,16 +107,11 @@ class AuthenticationException extends AppException {
   String get typeName => 'AuthenticationException';
 
   const AuthenticationException({
-    required String message,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    required super.message,
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 }
 
 class InvalidCredentialsException extends AuthenticationException {
@@ -147,33 +119,23 @@ class InvalidCredentialsException extends AuthenticationException {
   String get typeName => 'InvalidCredentialsException';
 
   const InvalidCredentialsException({
-    required String message,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    required super.message,
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 }
 
 class TokenExpiredException extends AuthenticationException {
   final DateTime? expiredAt;
 
   const TokenExpiredException({
-    required String message,
+    required super.message,
     this.expiredAt,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 
   @override
   String toString() => 'TokenExpiredException: $message${expiredAt != null ? ' (Expired: $expiredAt)' : ''}';
@@ -184,16 +146,11 @@ class SessionInvalidException extends AuthenticationException {
   String get typeName => 'SessionInvalidException';
 
   const SessionInvalidException({
-    required String message,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    required super.message,
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 }
 
 // Validation exceptions
@@ -203,14 +160,11 @@ class ValidationException extends AppException {
   const ValidationException({
     required this.errors,
     String? message,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
+    super.code,
+    super.originalError,
+    super.stackTrace,
   }) : super(
           message: message ?? 'Validation failed',
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
         );
 
   @override
@@ -228,17 +182,14 @@ class RequiredFieldException extends ValidationException {
   RequiredFieldException({
     required this.missingFields,
     String? message,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
+    super.code,
+    super.originalError,
+    super.stackTrace,
   }) : super(
           errors: {
             for (final field in missingFields) field: ['This field is required']
           },
           message: message ?? 'Required fields are missing',
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
         );
 
   @override
@@ -251,16 +202,11 @@ class DataException extends AppException {
   String get typeName => 'DataException';
 
   const DataException({
-    required String message,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    required super.message,
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 }
 
 class NotFoundException extends DataException {
@@ -271,18 +217,13 @@ class NotFoundException extends DataException {
   final String? resourceId;
 
   const NotFoundException({
-    required String message,
+    required super.message,
     this.resourceType,
     this.resourceId,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 
   @override
   String toString() => 'NotFoundException: $message${resourceType != null ? ' (Type: $resourceType)' : ''}${resourceId != null ? ' (ID: $resourceId)' : ''}';
@@ -296,18 +237,13 @@ class DuplicateResourceException extends DataException {
   final String? duplicateField;
 
   const DuplicateResourceException({
-    required String message,
+    required super.message,
     this.resourceType,
     this.duplicateField,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 }
 
 // Cache exceptions
@@ -316,16 +252,11 @@ class CacheException extends AppException {
   String get typeName => 'CacheException';
 
   const CacheException({
-    required String message,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    required super.message,
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 }
 
 class CacheMissException extends CacheException {
@@ -335,17 +266,12 @@ class CacheMissException extends CacheException {
   final String? cacheKey;
 
   const CacheMissException({
-    required String message,
+    required super.message,
     this.cacheKey,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 }
 
 // Business logic exceptions
@@ -354,16 +280,11 @@ class BusinessLogicException extends AppException {
   String get typeName => 'BusinessLogicException';
 
   const BusinessLogicException({
-    required String message,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    required super.message,
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 }
 
 class InsufficientPermissionException extends BusinessLogicException {
@@ -374,18 +295,13 @@ class InsufficientPermissionException extends BusinessLogicException {
   final String? userRole;
 
   const InsufficientPermissionException({
-    required String message,
+    required super.message,
     this.requiredPermission,
     this.userRole,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 }
 
 class ResourceLockedException extends BusinessLogicException {
@@ -393,18 +309,13 @@ class ResourceLockedException extends BusinessLogicException {
   final DateTime? lockExpiresAt;
 
   const ResourceLockedException({
-    required String message,
+    required super.message,
     this.lockedBy,
     this.lockExpiresAt,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 }
 
 // Configuration exceptions
@@ -413,31 +324,21 @@ class ConfigurationException extends AppException {
   String get typeName => 'ConfigurationException';
 
   const ConfigurationException({
-    required String message,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    required super.message,
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 }
 
 class MissingConfigurationException extends ConfigurationException {
   final String? configKey;
 
   const MissingConfigurationException({
-    required String message,
+    required super.message,
     this.configKey,
-    String? code,
-    dynamic originalError,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          code: code,
-          originalError: originalError,
-          stackTrace: stackTrace,
-        );
+    super.code,
+    super.originalError,
+    super.stackTrace,
+  });
 }

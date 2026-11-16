@@ -1,7 +1,8 @@
 /// UI Design Constants
 /// Contains all UI-related measurements, sizes, and visual constants
+library;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class UIConstants {
   // Border Radius Values

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/models/product.dart';
 import '../../core/localization/app_localizations.dart';
@@ -178,7 +178,7 @@ class ProductDetailScreen extends ConsumerWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                '${product.rating.toStringAsFixed(1)}',
+                product.rating.toStringAsFixed(1),
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.grey[600],

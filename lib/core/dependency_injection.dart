@@ -19,6 +19,7 @@
 /// final productRepository = DependencyInjection.get<ProductRepository>();
 /// final authRepository = DependencyInjection.get<AuthRepository>();
 /// ```
+library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/datasources/api_service.dart';

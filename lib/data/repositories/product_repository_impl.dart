@@ -19,6 +19,7 @@
 ///   (products) => print('Products: $products'),
 /// );
 /// ```
+library;
 
 import '../models/product.dart';
 import '../datasources/api_service.dart';

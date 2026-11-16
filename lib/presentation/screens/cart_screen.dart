@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/models/product.dart';
 import '../../data/models/cart_item.dart';
@@ -103,7 +103,7 @@ class CartScreen extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                localizations.translate('cart.total') + ':',
+                '${localizations.translate('cart.total')}:',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

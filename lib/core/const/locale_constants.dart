@@ -20,8 +20,9 @@
 /// 2. Update getLanguageName() method for new languages
 /// 3. Create corresponding JSON translation file in assets/translations/
 /// 4. Update language switcher widget to include new option
+library;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class LocaleConstants {
   // Private constructor to prevent instantiation

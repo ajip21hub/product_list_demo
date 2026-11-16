@@ -15,6 +15,7 @@
 /// final repository = UserRepositoryImpl(userService);
 /// final result = await repository.getUserProfile(userId);
 /// ```
+library;
 
 import '../models/user.dart';
 import 'product_repository.dart';

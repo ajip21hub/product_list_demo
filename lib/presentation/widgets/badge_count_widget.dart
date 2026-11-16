@@ -10,8 +10,9 @@
 ///   child: Icon(Icons.shopping_cart),
 /// )
 /// ```
+library;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class BadgeCountWidget extends StatelessWidget {
   final int count;
@@ -24,7 +25,7 @@ class BadgeCountWidget extends StatelessWidget {
   final EdgeInsets? badgePadding;
 
   const BadgeCountWidget({
-    Key? key,
+    super.key,
     required this.count,
     required this.child,
     this.badgeColor,
@@ -33,7 +34,7 @@ class BadgeCountWidget extends StatelessWidget {
     this.showBadge = true,
     this.badgeLabel,
     this.badgePadding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

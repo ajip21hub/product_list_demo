@@ -18,7 +18,7 @@ class Result<T> {
     required R Function(Exception error) onFailure,
   }) {
     if (isSuccess) {
-      return onSuccess(data!);
+      return onSuccess(data as T);
     } else {
       return onFailure(error!);
     }

@@ -19,6 +19,7 @@
 ///   (session) => print('Session: $session'),
 /// );
 /// ```
+library;
 
 import 'dart:async';
 import '../repositories/session_repository.dart';

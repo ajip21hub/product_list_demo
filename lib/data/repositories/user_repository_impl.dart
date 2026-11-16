@@ -19,6 +19,7 @@
 ///   (user) => print('User: $user'),
 /// );
 /// ```
+library;
 
 import '../models/user.dart';
 import '../repositories/user_repository.dart';

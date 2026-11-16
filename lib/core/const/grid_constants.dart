@@ -1,5 +1,6 @@
 /// Grid Layout Constants
 /// Contains all grid-related configuration for product lists and other grid layouts
+library;
 
 class GridConstants {
   // Product Grid Configuration
